@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}Add New Goal{% endblock %}
+{% block content %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #fff;
+        color: #000;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .goal-examples {
+        background-color: #f1fff5;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        border-left: 4px solid #00c851;
+    }
+
+    .goal-examples h4 {
+        color: #00c851;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .goal-examples ul {
+        list-style: none;
+        padding-left: 0;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    .goal-examples li {
+        margin-bottom: 6px;
+    }
+
+    .form-card {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 25px 30px;
+        border: 1px solid #ccc;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #000;
+        font-weight: bold;
+        font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #00c851;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+        min-width: 48%;
+    }
+
+    .form-actions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start;
+        gap: 15px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #00c851;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #009e3c;
+    }
+
+    .btn-secondary {
+        background-color: #777;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #555;
+    }
+
+    .required {
+        color: #f44336;
+    }
+</style>
+
+<div class="container">
+    <h1>Add New Goal</h1>
+
+    <div class="goal-examples">
+        <h4>Goal Examples:</h4>
+        <ul>
+            <li>• Reach 100kg Bench Press</li>
+            <li>• Run a 5k</li>
+            <li>• Workout 4 times a week</li>
+            <li>• Lose 5kg Bodyweight</li>
+        </ul>
+    </div>
+
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Goal Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" required 
+                       placeholder="e.g., Reach 100kg Bench Press">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description (Optional)</label>
+                <textarea id="description" name="description" 
+                          placeholder="Additional details about your goal..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="goal_type">Goal Type</label>
+                <select id="goal_type" name="goal_type">
+                    <option value="strength">Strength Goal</option>
+                    <option value="cardio">Cardio Goal</option>
+                    <option value="frequency">Frequency Goal</option>
+                    <option value="bodyweight">Bodyweight Goal</option>
+                    <option value="custom">Custom Goal</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="target_value">Target Value <span class="required">*</span></label>
+                    <input type="number" id="target_value" name="target_value" 
+                           step="0.1" min="0" required placeholder="100">
+                </div>
+                <div class="form-group">
+                    <label for="unit">Unit <span class="required">*</span></label>
+                    <select id="unit" name="unit" required>
+                        <option value="kg">kg (Weight)</option>
+                        <option value="km">km (Distance)</option>
+                        <option value="times">times (Frequency)</option>
+                        <option value="minutes">minutes (Time)</option>
+                        <option value="reps">reps (Repetitions)</option>
+                        <option value="lbs">lbs (Pounds)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="current_value">Current Progress</label>
+                    <input type="number" id="current_value" name="current_value" 
+                           step="0.1" min="0" value="0" placeholder="85">
+                </div>
+                <div class="form-group">
+                    <label for="deadline">Target Date (Optional)</label>
+                    <input type="date" id="deadline" name="deadline">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add Goal</button>
+                <a href="{% url 'fitness_goals' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

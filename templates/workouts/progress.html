@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% block title %}Progress Tracking{% endblock %}
+{% block content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #fff;
+        color: #000;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .exercise-selector {
+        margin-bottom: 30px;
+    }
+
+    .exercise-selector label {
+        display: block;
+        margin-bottom: 8px;
+        color: #000;
+        font-size: 1rem;
+    }
+
+    .exercise-selector select {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px 15px;
+        font-size: 1rem;
+        width: 300px;
+        cursor: pointer;
+    }
+
+    .exercise-selector select:focus {
+        outline: none;
+        border-color: #00c851;
+    }
+
+    .chart-container {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .chart-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #000;
+    }
+
+    .chart-subtitle {
+        color: #444;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 400px;
+        width: 100%;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        padding: 50px 20px;
+    }
+
+    .no-data p {
+        margin-bottom: 10px;
+    }
+
+    .submit-btn {
+        background-color: #00c851;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .submit-btn:hover {
+        background-color: #009e3c;
+    }
+</style>
+
+    <div class="container">
+        <h1>Progress Tracking</h1>
+        
+        <div class="exercise-selector">
+            <form method="get">
+                <label for="exercise">Select Exercise:</label>
+                <select name="exercise" id="exercise" onchange="this.form.submit()">
+                    <option value="">Choose an exercise...</option>
+                    {% for exercise in exercises %}
+                    <option value="{{ exercise }}" 
+                            {% if exercise == selected_exercise %}selected{% endif %}>
+                        {{ exercise }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        {% if selected_exercise %}
+        <div class="chart-container">
+            <h2 class="chart-title">{{ selected_exercise }} Progression</h2>
+            <p class="chart-subtitle">Weight lifted over the last few weeks.</p>
+            
+            {% if chart_data %}
+            <div class="chart-wrapper">
+                <canvas id="progressChart"></canvas>
+            </div>
+            {% else %}
+            <div class="no-data">
+                <p>No data available for {{ selected_exercise }}.</p>
+                <p>Complete some workouts to see your progress!</p>
+            </div>
+            {% endif %}
+        </div>
+        {% elif exercises %}
+        <div class="chart-container">
+            <div class="no-data">
+                <p>Select an exercise from the dropdown to view your progress.</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="chart-container">
+            <div class="no-data">
+                <p>No workout data available.</p>
+                <p>Complete some workouts to start tracking your progress!</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if chart_data %}
+    {% if chart_data %}
+        <script>
+            const chartData = {{ chart_data|safe }};
+            const labels = chartData.map(item => item.date);
+            const weights = chartData.map(item => item.weight);
+
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weights,
+                        borderColor: '#00c851',
+                        backgroundColor: 'rgba(0, 200, 81, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#00c851',
+                        pointBorderColor: '#00c851',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        tension: 0.2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                color: '#444'
+                            },
+                            ticks: {
+                                color: '#444'
+                            },
+                            grid: {
+                                color: '#ddd'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Weight (kg)',
+                                color: '#444'
+                            },
+                            ticks: {
+                                color: '#444'
+                            },
+                            grid: {
+                                color: '#ddd'
+                            },
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        </script>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}

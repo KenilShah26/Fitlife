@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Fitness Studio {%endblock title %}</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+        /* ===== Base styles ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #000;
+    display: flex;
+    overflow-x: hidden;
+}
+
+/* ===== Mobile Menu Toggle Button ===== */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, #00c851 0%, #007e33 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 8px 25px rgba(0, 200, 81, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-toggle:hover {
+    background: linear-gradient(135deg, #007e33 0%, #005a24 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 200, 81, 0.4);
+}
+
+.menu-toggle:active {
+    transform: translateY(0);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    width: 260px;
+    background: #ffffff;
+    min-height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #e9ecef;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #00c851 0%, #007e33 100%);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+}
+
+.sidebar h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0 15px;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 8px;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.sidebar ul li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 81, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.sidebar ul li a:hover::before {
+    left: 100%;
+}
+
+.sidebar ul li a:hover {
+    background: linear-gradient(135deg, rgba(0, 200, 81, 0.1) 0%, rgba(0, 126, 51, 0.05) 100%);
+    color: #007e33;
+    transform: translateX(8px);
+    border-color: rgba(0, 200, 81, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 200, 81, 0.1);
+}
+
+.sidebar ul li a.active {
+    background: linear-gradient(135deg, #00c851 0%, #007e33 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(0, 200, 81, 0.3);
+    transform: translateX(5px);
+}
+
+.sidebar ul li a i {
+    margin-right: 15px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: rgba(0, 200, 81, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: #007e33;
+}
+
+.sidebar ul li a:hover i {
+    background: rgba(0, 200, 81, 0.2);
+    transform: scale(1.1);
+    color: #007e33;
+}
+
+.sidebar ul li a.active i {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    right: 20px;
+    padding: 15px;
+    background: rgba(0, 200, 81, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 200, 81, 0.1);
+    text-align: center;
+}
+
+.sidebar-footer p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ===== Overlay for mobile ===== */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* ===== Main content ===== */
+.main-content {
+    margin-left: 260px;
+    padding: 30px;
+    box-sizing: border-box;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    background: #ffffff;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+    width: 100%;
+}
+
+/* ===== Buttons ===== */
+button, .btn, input[type="submit"] {
+    background-color: #006400;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover, input[type="submit"]:hover {
+    background-color: #004d00;
+}
+
+/* ===== Mobile Responsive Styles ===== */
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        box-shadow: 4px 0 30px rgba(0,0,0,0.2);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 80px 20px 30px 20px;
+    }
+    
+    .main-content.expanded {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+.fitlife-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.fitlife-brand i {
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 300px;
+    }
+    
+    .sidebar h2 {
+        font-size: 1.6rem;
+    }
+    
+    .sidebar ul li a {
+        padding: 18px 20px;
+        font-size: 15px;
+    }
+    
+    .main-content {
+        padding: 80px 15px 30px 15px;
+    }
+}
+
+/* ===== Desktop Toggle Functionality ===== */
+@media screen and (min-width: 769px) {
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+    }
+}
+</style>
+    
+</head>
+<body>
+    <!-- Mobile Menu Toggle Button -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="fitlife-brand"><i class="fas fa-dumbbell"></i><span>FitLife</span></h2>
+
+        </div>
+        <ul>
+           <li>
+            <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'log_workout' %}" class="{% if request.resolver_match.url_name == 'log_workout' %}active{% endif %}">
+                <i class="fas fa-dumbbell"></i> Log Workout
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'workout_plans' %}" class="{% if request.resolver_match.url_name == 'workout_plans' %}active{% endif %}">
+                <i class="fas fa-clipboard-list"></i> Workout Plans
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'progress' %}" class="{% if request.resolver_match.url_name == 'progress' %}active{% endif %}">
+                <i class="fas fa-chart-bar"></i> Progress
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'fitness_goals' %}" class="{% if request.resolver_match.url_name == 'fitness_goals' %}active{% endif %}">
+                <i class="fas fa-bullseye"></i> Goals
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'workout_history' %}" class="{% if request.resolver_match.url_name == 'workout_history' %}active{% endif %}">
+                <i class="fas fa-history"></i> Workout History
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'bmi_calculator' %}" class="{% if request.resolver_match.url_name == 'bmi_calculator' %}active{% endif %}">
+                <i class="fas fa-weight"></i> BMI Calculator
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'logout' %}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            </li>
+
+        </ul>
+
+        <div class="sidebar-footer">
+            <p>Stay Strong 💪</p>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        {% block content %}
+        <!-- Page specific content will be injected here -->
+        {% endblock %}
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const overlay = document.getElementById('overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('expanded');
+
+            // Overlay for mobile
+            if (window.innerWidth <= 768) {
+                overlay.classList.toggle('active');
+            }
+        }
+
+        // Toggle sidebar on button click
+        menuToggle.addEventListener('click', toggleSidebar);
+
+        // Hide sidebar when overlay is clicked
+        overlay.addEventListener('click', function () {
+            if (sidebar.classList.contains('active')) {
+                toggleSidebar();
+            }
+        });
+
+        // Responsive behavior on window resize
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) {
+                overlay.classList.remove('active');
+                if (sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            } else {
+                if (!sidebar.classList.contains('hidden') && !sidebar.classList.contains('active')) {
+                    sidebar.classList.add('hidden');
+                    mainContent.classList.add('expanded');
+                }
+            }
+        });
+
+        // Initial state for mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('hidden');
+            mainContent.classList.add('expanded');
+        }
+    });
+</script>
+
+</body>
+</html>

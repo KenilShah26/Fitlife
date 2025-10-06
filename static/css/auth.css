@@ -1,0 +1,70 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.auth-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 350px;
+}
+
+.auth-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-box input {
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.auth-box button {
+  background: #28a745; /* Change to your primary fitness theme color */
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.3s;
+}
+
+.auth-box button:hover {
+  background: #218838;
+}
+
+.auth-box a {
+  text-align: center;
+  display: block;
+  margin-top: 10px;
+  color: #28a745;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.auth-box a:hover {
+  text-decoration: underline;
+}
+
+.auth-box p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 13px;
+}

@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | FitLife</title>
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-box">
+      <h2>Register</h2>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.first_name }}
+        {{ form.email }}
+        {{ form.password }}
+        {{ form.confirm_password }}
+        <button type="submit">Create Account</button>
+      </form>
+      <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+  </div>
+</body>
+</html>

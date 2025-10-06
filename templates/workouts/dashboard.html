@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000;
+  }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .dashboard-container h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-container p {
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #ddd;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-icon {
+    background-color: #00c851; /* bright green */
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .card h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #000;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .card a {
+    display: inline-block;
+    background-color: #00c851; /* bright green */
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  .card a:hover {
+    background-color: #009e3c; /* slightly darker on hover */
+  }
+
+  @media (max-width: 900px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+  <p>Welcome back! Here's your fitness overview.</p>
+
+  <div class="cards">
+
+    <!-- Log Workout -->
+    <div class="card">
+      <div class="card-icon">🏋️‍♂️</div>
+      <h2>Log a Workout</h2>
+      <p>Record your daily exercises, sets, reps, and weights.</p>
+      <a href="{% url 'log_workout' %}">Go to Log a Workout</a>
+    </div>
+
+    <!-- Workout Plans -->
+    <div class="card">
+      <div class="card-icon">📝</div>
+      <h2>Workout Plans</h2>
+      <p>Create and manage your custom workout routines efficiently.</p>
+      <a href="{% url 'workout_plans' %}">Go to Workout Plans</a>
+    </div>
+
+    <!-- Progress Tracking -->
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h2>Track Progress</h2>
+      <p>Visualize your improvements with charts and analytics.</p>
+      <a href="{% url 'progress' %}">Go to Track Progress</a>
+    </div>
+
+    <!-- Set Goals -->
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h2>Set Goals</h2>
+      <p>Define and track your personal fitness objectives.</p>
+      <a href="{% url 'fitness_goals' %}">Go to Set Goals</a>
+    </div>
+
+    <!-- Workout History -->
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h2>Workout History</h2>
+      <p>See your past workouts</p>
+      <a href="{% url "workout_history" %}">Go to Workout History</a>
+    </div>
+
+    <!-- BMI Calculator -->
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <h2>BMI Calculator</h2>
+      <p>Quickly calculate your Body Mass Index and understand ranges.</p>
+      <a href="{% url "bmi_calculator" %}">Go to BMI Calculator</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

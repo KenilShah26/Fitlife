@@ -1,0 +1,86 @@
+/* ===== Base styles ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff; /* changed from #222 */
+    color: #000;      /* changed from #fff */
+    display: flex;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    width: 200px;
+    background: #f0f0f0; /* lighter sidebar background for white theme */
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: lime; /* kept lime for contrast */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 10px 15px;
+    color: #000; /* changed from #fff */
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    background: #ddd; /* softer hover color for light background */
+}
+
+/* ===== Main content ===== */
+.main-content {
+    margin-left: 200px;
+    padding: 20px;
+    box-sizing: border-box;
+    width: calc(100% - 200px);
+    min-height: 100vh;
+    background: #fff; /* changed from #222 */
+    color: #000;      /* added to override */
+}
+
+/* ===== Buttons ===== */
+button, .btn, input[type="submit"] {
+    background-color: #006400; /* dark green */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover, input[type="submit"]:hover {
+    background-color: #004d00; /* even darker green on hover */
+}
+
+.sidebar ul li a {
+  display: block;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #333;
+}
+
+.sidebar ul li a.active {
+  background-color: #4caf50; /* same as your cards */
+  color: white;
+}
